@@ -4,8 +4,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_api_test/funcs.dart';
+import 'package:flutter_api_test/reorderable_list_test.dart';
 import 'package:http/http.dart' as http;
 
+import 'admin_menu.dart';
 import 'menu.dart';
 
 void main() {
@@ -47,13 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (isAuth) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Menu()),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -70,16 +65,50 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             FlatButton(
               onPressed: () async {
+                token = await reqs.getTokenAdmin(
+                    login: name.text, password: password.text);
+                print(token +
+                    "////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
+                if (token != null) {
+                  await reqs.getProfileAdmin(token: token);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AdminMenu(
+                              token: token,
+                            )),
+                  );
+                }
+              },
+              child: Text('Enter admin'),
+            ),
+            FlatButton(
+              onPressed: () async {
                 token = await reqs.getToken(
                     login: name.text, password: password.text);
-                setState(() async {
-                  if (token != null) {
-                    isAuth = true;
-                    await reqs.getProfile(token: token);
-                  }
-                });
+                print(token +
+                    "////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
+                if (token != null) {
+                  await reqs.getProfile(token: token);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Menu(
+                              token: token,
+                            )),
+                  );
+                }
               },
               child: Text('Enter'),
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Reorder_Test()),
+                );
+              },
+              child: Text('Test_1'),
             ),
           ],
         ),
