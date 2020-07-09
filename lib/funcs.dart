@@ -101,6 +101,7 @@ class Requests {
     }
   }
 
+  ///Загрузка локальной корзины на сервер
   Future<void> updateBasket(Map<String, int> basket, String token) async {
     var body = jsonEncode({"basket": basket});
     print(body);
@@ -182,6 +183,7 @@ class Requests {
     print(response);
   }
 
+  ///Превращает изображение в список байтов
   Future<Uint8List> getImageBytes() async {
     Uint8List bytesFromPicker =
         await ImagePickerWeb.getImage(outputType: ImageType.bytes);
@@ -193,6 +195,7 @@ class Requests {
       return null;
   }
 
+  ///Превращает картинку в виджет Image
   Future<Image> getImageWidget() async {
     Image fromPicker =
         await ImagePickerWeb.getImage(outputType: ImageType.widget);
@@ -203,22 +206,7 @@ class Requests {
       return null;
   }
 
-  Future<void> uploadFile(String token, String id, Uint8List picBytes) async {
-    var postUri = Uri.parse(URL + "/dishes/" + id);
-    var request = new http.MultipartRequest("PUT", postUri);
-    print(Base64Encoder().convert(picBytes) + '////////////////////////');
-    var temp = Base64Encoder().convert(picBytes);
-    request.files.add(new http.MultipartFile.fromBytes('dish[picurl]', picBytes,
-        contentType: new MediaType("image", "jpeg")));
-    var headers = {
-      HttpHeaders.authorizationHeader: token,
-      'Content-Type': 'multipart/form-data'
-    };
-    request.headers.addAll(headers);
-    var resp = await request.send();
-    print(resp);
-  }
-
+  ///Загружает картинку блюда на сервер
   Future<void> ffs(Uint8List picBytes, String token, String id) async {
     var pic = base64Encode(picBytes);
     http.Response response = await http.put(URL + "/dishes/$id",

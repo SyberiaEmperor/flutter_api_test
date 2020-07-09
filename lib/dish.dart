@@ -11,6 +11,7 @@ class Dish {
   final String caption1;
   final String caption2;
   final String caption3;
+  int position;
   String picUrl;
   final String category;
 
@@ -40,6 +41,7 @@ class Dish {
         caption3 = data['caption3'],
         price = data['price'],
         category = data['category'],
+        position = data['zindex'],
         picUrl = Requests.URL + data['picUrl'];
 
   Map<String, dynamic> toJson() {
@@ -52,6 +54,7 @@ class Dish {
       'price': price,
       'category': category,
       'picurl': picUrl,
+      'zindex': position,
     };
   }
 }
