@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_api_test/funcs.dart';
 
 class Dish {
@@ -22,7 +23,8 @@ class Dish {
       this.caption2 = '',
       this.caption3 = '',
       this.price,
-      this.id = '',
+      @required this.id,
+      @required this.position,
       this.category});
   void printAll() {
     print("id = $id");
@@ -58,3 +60,14 @@ class Dish {
     };
   }
 }
+
+List<Dish> testlist = [
+  new Dish(id: "001", name: "Пельмени", position: 0),
+  new Dish(id: "002", name: "Борщ", position: 1),
+  new Dish(id: "003", name: "Луперкаль", position: 2),
+  new Dish(id: "004", name: "ТГК", position: 3),
+  new Dish(id: "005", name: "Киста", position: 4),
+  new Dish(id: "006", name: "Кистаочка", position: 5),
+  new Dish(id: "007", name: "Царь-тряпка", position: 6),
+  new Dish(id: "008", name: "Кирилл", position: 7),
+];
