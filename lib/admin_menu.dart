@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +19,7 @@ class _MenuState extends State<AdminMenu> {
   _MenuState({this.token});
   Requests reqs = Requests();
 
-  Image img = null;
+  Uint8List img = null;
 
   TextEditingController dishid = TextEditingController();
   TextEditingController category = TextEditingController();
@@ -104,15 +106,16 @@ class _MenuState extends State<AdminMenu> {
             ),
             FlatButton(
               onPressed: () async {
-                img = await reqs.getImageWidget();
+                img = await reqs.getImageBytes();
                 this.setState(() {});
               },
               child: Text('load image'),
             ),
             CircleAvatar(
               radius: 125.5,
-              backgroundImage:
-                  img == null ? AssetImage('assets/images/logo.png') : img,
+              backgroundImage: img == null
+                  ? AssetImage('assets/images/logo.png')
+                  : MemoryImage(img),
             ),
             FlatButton(
               onPressed: () {
