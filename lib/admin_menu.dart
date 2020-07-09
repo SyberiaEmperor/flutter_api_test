@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'dish.dart';
 import 'funcs.dart';
 
 class AdminMenu extends StatefulWidget {
@@ -15,6 +16,8 @@ class AdminMenu extends StatefulWidget {
 class _MenuState extends State<AdminMenu> {
   _MenuState({this.token});
   Requests reqs = Requests();
+
+  Image img = null;
 
   TextEditingController dishid = TextEditingController();
   TextEditingController category = TextEditingController();
@@ -64,21 +67,32 @@ class _MenuState extends State<AdminMenu> {
             ),
             FlatButton(
               onPressed: () async {
-                await reqs.updateDish(
-                    token,
-                    {
-                      "name": name.text,
-                      "price": price.text,
-                      "category": category.text
-                    },
-                    dishid.text);
+                Dish dish = Dish(
+                  name: name.text,
+                  subName: subname.text,
+                  caption1: cap1.text,
+                  caption2: cap2.text,
+                  caption3: cap3.text,
+                  price: price.text,
+                  id: dishid.text,
+                  category: category.text,
+                );
+                await reqs.updateDish(token, dish, dish.id);
               },
               child: Text('update dish'),
             ),
             FlatButton(
               onPressed: () async {
-                await reqs
-                    .addDish(token, {"name": name.text, "price": price.text});
+                Dish dish = Dish(
+                  name: name.text,
+                  subName: subname.text,
+                  caption1: cap1.text,
+                  caption2: cap2.text,
+                  caption3: cap3.text,
+                  price: price.text,
+                  category: category.text,
+                );
+                await reqs.addDish(token, dish);
               },
               child: Text('add'),
             ),
@@ -87,6 +101,26 @@ class _MenuState extends State<AdminMenu> {
                 await reqs.deleteDish(token, dishid.text);
               },
               child: Text('delete dish'),
+            ),
+            FlatButton(
+              onPressed: () async {
+                img = await reqs.getImageWidget();
+                this.setState(() {});
+              },
+              child: Text('load image'),
+            ),
+            CircleAvatar(
+              radius: 125.5,
+              backgroundImage:
+                  img == null ? AssetImage('assets/images/logo.png') : img,
+            ),
+            FlatButton(
+              onPressed: () {
+                setState(() {
+                  img = img;
+                });
+              },
+              child: Text('update page'),
             ),
           ],
         ),

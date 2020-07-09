@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:typed_data';
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker_web/image_picker_web.dart';
+
+import 'dish.dart';
 
 class Requests {
   static const URL = 'http://109.172.68.223:3000';
@@ -121,9 +125,10 @@ class Requests {
   }
 
   ///Запрос на добавление блюда
-  Future<void> addDish(String token, var dish) async {
+  Future<void> addDish(String token, Dish dish) async {
     //TODO: Поменять тип диша
     //TODO: Изменить возвращаемый тип данных
+    print(jsonEncode({"dish": dish}));
     http.Response response = await http.post(
       URL + "/dishes",
       headers: {
@@ -149,7 +154,7 @@ class Requests {
   }
 
   ///Запрос на получение блюда по его айди
-  Future<void> updateDish(String token, var dish, String id) async {
+  Future<void> updateDish(String token, Dish dish, String id) async {
     //TODO: Переместить айдишник из параметров в тело функции
     //TODO: Изменить возвращаемый тип данных
     http.Response response = await http.put(
@@ -173,6 +178,27 @@ class Requests {
       },
     );
     print(response);
+  }
+
+  Future<Uint8List> getImageBytes() async {
+    Uint8List bytesFromPicker =
+        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+
+    if (bytesFromPicker != null) {
+      print(bytesFromPicker);
+      return bytesFromPicker;
+    } else
+      return null;
+  }
+
+  Future<Image> getImageWidget() async {
+    Image fromPicker =
+        await ImagePickerWeb.getImage(outputType: ImageType.widget);
+
+    if (fromPicker != null) {
+      return fromPicker;
+    } else
+      return null;
   }
 }
 
