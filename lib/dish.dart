@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_api_test/funcs.dart';
 
 class Dish {
+  Requests reqs = Requests();
+
   String id;
   final String name;
   final String subName;
@@ -8,7 +11,7 @@ class Dish {
   final String caption1;
   final String caption2;
   final String caption3;
-
+  String picUrl;
   final String category;
 
   Dish(
@@ -36,7 +39,8 @@ class Dish {
         caption2 = data['caption2'],
         caption3 = data['caption3'],
         price = data['price'],
-        category = data['category'];
+        category = data['category'],
+        picUrl = Requests.URL + data['picUrl'];
 
   Map<String, dynamic> toJson() {
     return {
@@ -47,6 +51,7 @@ class Dish {
       'caption3': caption3,
       'price': price,
       'category': category,
+      'picurl': picUrl,
     };
   }
 }

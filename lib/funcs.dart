@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
 import 'dish.dart';
@@ -125,9 +126,10 @@ class Requests {
   }
 
   ///Запрос на добавление блюда
-  Future<void> addDish(String token, Dish dish) async {
+  Future<void> addDish(String token, Dish dish, Uint8List img) async {
     //TODO: Поменять тип диша
     //TODO: Изменить возвращаемый тип данных
+    dish.picUrl = "data:image/jpeg;base64," + base64Encode(img);
     print(jsonEncode({"dish": dish}));
     http.Response response = await http.post(
       URL + "/dishes",
@@ -199,6 +201,37 @@ class Requests {
       return fromPicker;
     } else
       return null;
+  }
+
+  Future<void> uploadFile(String token, String id, Uint8List picBytes) async {
+    var postUri = Uri.parse(URL + "/dishes/" + id);
+    var request = new http.MultipartRequest("PUT", postUri);
+    print(Base64Encoder().convert(picBytes) + '////////////////////////');
+    var temp = Base64Encoder().convert(picBytes);
+    request.files.add(new http.MultipartFile.fromBytes('dish[picurl]', picBytes,
+        contentType: new MediaType("image", "jpeg")));
+    var headers = {
+      HttpHeaders.authorizationHeader: token,
+      'Content-Type': 'multipart/form-data'
+    };
+    request.headers.addAll(headers);
+    var resp = await request.send();
+    print(resp);
+  }
+
+  Future<void> ffs(Uint8List picBytes, String token, String id) async {
+    var pic = base64Encode(picBytes);
+    http.Response response = await http.put(URL + "/dishes/$id",
+        headers: {
+          HttpHeaders.authorizationHeader: token,
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          "dish": {
+            "picurl": "data:image/jpeg;base64," + pic,
+          }
+        }));
+    print(response.body);
   }
 }
 

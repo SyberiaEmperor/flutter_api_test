@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  http_parser: ^3.1.4
   image_picker_web: any
   cached_network_image:
   reorderables:

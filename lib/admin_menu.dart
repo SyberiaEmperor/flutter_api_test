@@ -94,7 +94,7 @@ class _MenuState extends State<AdminMenu> {
                   price: price.text,
                   category: category.text,
                 );
-                await reqs.addDish(token, dish);
+                await reqs.addDish(token, dish, img);
               },
               child: Text('add'),
             ),
@@ -119,11 +119,9 @@ class _MenuState extends State<AdminMenu> {
             ),
             FlatButton(
               onPressed: () {
-                setState(() {
-                  img = img;
-                });
+                reqs.ffs(img, token, dishid.text);
               },
-              child: Text('update page'),
+              child: Text('upload image to server'),
             ),
           ],
         ),
