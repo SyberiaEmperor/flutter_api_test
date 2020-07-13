@@ -72,12 +72,14 @@ class _MenuState extends State<Menu> {
               child: Text('get dish by id'),
             ),
             FlatButton(
-              onPressed: () {
+              onPressed: () async {
+                String id = await reqs.getProfile(token: token);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Chat_View(
                             token: token,
+                            id: id,
                           )),
                 );
               },

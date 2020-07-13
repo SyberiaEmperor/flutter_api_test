@@ -42,13 +42,16 @@ class Requests {
   }
 
   ///Получить информацию о пользователе
-  Future<void> getProfile({@required String token}) async {
+  Future<String> getProfile({@required String token}) async {
     http.Response response = await http
         .get(URL + "/user", headers: {HttpHeaders.authorizationHeader: token});
     if (response.statusCode == 401)
       throw new NotAuthorized();
     else {
+      String id = jsonDecode(response.body)["id"].toString();
       print(jsonDecode(response.body)); //TODO: Implement actions
+      print(id);
+      return id;
     }
   }
 
@@ -242,12 +245,13 @@ class Chat {
 
   userChat(String token, String msg, String id) {
     var cable = ActionCable.Connect(
-      "WS?token=$token",
+      "$WS?token=$token",
       onConnected: () => print("Connected"),
+      onCannotConnect: () => print("Cannot connect"),
       onConnectionLost: () => print("Connection lost"),
     );
     cable.subscribe(
-      "RoomChannel/$id",
+      "RoomChannel$id",
       onSubscribed: () => print("Subscribed on channel Chat"),
       onMessage: (message) => print("Got some message!\n$message"),
     );
@@ -255,9 +259,12 @@ class Chat {
   }
 
   superUserChat(String token, String msg, String uid) {
+    String url = "ws://echo.websocket.org";
+    print(url);
     var cable = ActionCable.Connect(
-      "WS?token=$token&role=superuser&chat_id=$uid",
+      url,
       onConnected: () => print("Connected"),
+      onCannotConnect: () => print("Cannot connect"),
       onConnectionLost: () => print("Connection lost"),
     );
     cable.subscribe(
@@ -268,7 +275,8 @@ class Chat {
       onSubscribed: () => print("Subscribed on channel Chat"),
       onMessage: (message) => print("Got some message!\n$message"),
     );
-    cable.performAction("Chat", action: "send", actionParams: {"message": msg});
+    cable.performAction("RoomChannel",
+        action: "send_message", actionParams: {"message": msg});
   }
 }
 
