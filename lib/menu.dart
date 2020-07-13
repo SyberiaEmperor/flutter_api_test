@@ -73,7 +73,7 @@ class _MenuState extends State<Menu> {
             ),
             FlatButton(
               onPressed: () async {
-                String id = "2";
+                String id = '1';
                 Navigator.push(
                   context,
                   MaterialPageRoute(

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:action_cable/action_cable.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -194,25 +194,15 @@ class Requests {
 
   ///Превращает изображение в список байтов
   Future<Uint8List> getImageBytes() async {
-    Uint8List bytesFromPicker =
+    /* Uint8List bytesFromPicker =
         await ImagePickerWeb.getImage(outputType: ImageType.bytes);
 
     if (bytesFromPicker != null) {
       print(bytesFromPicker);
       return bytesFromPicker;
     } else
-      return null;
-  }
-
-  ///Превращает картинку в виджет Image
-  Future<Image> getImageWidget() async {
-    Image fromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.widget);
-
-    if (fromPicker != null) {
-      return fromPicker;
-    } else
-      return null;
+      return null;*/
+    return null;
   }
 
   ///Загружает картинку блюда на сервер
@@ -251,10 +241,10 @@ class Chat {
     );
   }
 
-/*
+  ActionCable cable;
 
   userChat(String token, String msg, String id) {
-    var cable = ActionCable.Connect(
+    cable = ActionCable.Connect(
       "$WS?token=$token",
       onConnected: () => print("Connected"),
       onCannotConnect: () => print("i can't"),
@@ -265,11 +255,19 @@ class Chat {
       onSubscribed: () => print("Subscribed on channel Chat"),
       onMessage: (message) => print("Got some message!\n$message"),
     );
-    cable.performAction("Chat", action: "send", actionParams: {"message": msg});
+  }
+
+  sendMessage(String msg, String id) {
+    cable.performAction("RoomChannel", action: "receive", channelParams: {
+      "chat_id": id,
+    }, actionParams: {
+      "message": msg,
+      "type": 1
+    });
   }
 
   superUserChat(String token, String msg, String uid) {
-    var cable = ActionCable.Connect(
+    cable = ActionCable.Connect(
       "$WS?token=$token&role=superuser&chat_id=$uid",
       onConnected: () => print("Connected"),
       onConnectionLost: () => print("Connection lost"),
@@ -282,10 +280,8 @@ class Chat {
       onSubscribed: () => print("Subscribed on channel Chat"),
       onMessage: (message) => print("Got some message!\n$message"),
     );
-    cable.performAction("Chat", action: "send", actionParams: {"message": msg});
+    //cable.performAction("Chat", action: "send", actionParams: {"message": msg});
   }
-}
-*/
 }
 
 class NetworkException implements Exception {}

@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  action_cable: ^1.1.0
   http_parser: ^3.1.4
   image_picker_web: any
   web_socket_channel: ^1.1.0

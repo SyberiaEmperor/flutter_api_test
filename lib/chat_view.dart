@@ -27,9 +27,7 @@ class _Chat_ViewState extends State<Chat_View> {
   @override
   void initState() {
     super.initState();
-    chat.defConnect(
-      token,
-    );
+    chat.superUserChat(token, "message", '1');
     idx = 1;
     messages.add(Container(
       child: Text("Message" + idx.toString()),
@@ -56,12 +54,7 @@ class _Chat_ViewState extends State<Chat_View> {
               ),
               FlatButton(
                 onPressed: () {
-                  idx++;
-                  setState(() {
-                    messages.add(Container(
-                      child: Text('Message' + idx.toString()),
-                    ));
-                  });
+                  chat.sendMessage(text.text, id.toString());
                 },
                 child: Text('Add message'),
               ),
