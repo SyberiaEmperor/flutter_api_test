@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_api_test/chat_view.dart';
 
 import 'dish.dart';
 import 'funcs.dart';
@@ -135,6 +136,18 @@ class _MenuState extends State<AdminMenu> {
                   await reqs.addDish(token, testlist[i], img);
               },
               child: Text('get dishes'),
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Chat_View(
+                            token: token,
+                          )),
+                );
+              },
+              child: Text('Chat'),
             ),
           ],
         ),
