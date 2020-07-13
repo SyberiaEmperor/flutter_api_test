@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:action_cable/action_cable.dart';
 
 import 'dish.dart';
@@ -196,25 +195,16 @@ class Requests {
 
   ///Превращает изображение в список байтов
   Future<Uint8List> getImageBytes() async {
-    Uint8List bytesFromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+    //Uint8List bytesFromPicker =
+    // await ImagePickerWeb.getImage(outputType: ImageType.bytes);
 
-    if (bytesFromPicker != null) {
+    /*if (bytesFromPicker != null) {
       print(bytesFromPicker);
       return bytesFromPicker;
     } else
-      return null;
-  }
+      return null;*/
 
-  ///Превращает картинку в виджет Image
-  Future<Image> getImageWidget() async {
-    Image fromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.widget);
-
-    if (fromPicker != null) {
-      return fromPicker;
-    } else
-      return null;
+    return null;
   }
 
   ///Загружает картинку блюда на сервер
