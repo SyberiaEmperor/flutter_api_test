@@ -23,7 +23,7 @@ environment:
 dependencies:
   http_parser: ^3.1.4
   image_picker_web: any
-  action_cable: ^1.1.0
+  web_socket_channel: ^1.1.0
   cached_network_image:
   reorderables:
   http:

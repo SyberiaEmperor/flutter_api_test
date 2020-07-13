@@ -242,12 +242,12 @@ class Chat {
 
   userChat(String token, String msg, String id) {
     var cable = ActionCable.Connect(
-      "WS?token=$token",
+      "$WS?token=$token",
       onConnected: () => print("Connected"),
       onConnectionLost: () => print("Connection lost"),
     );
     cable.subscribe(
-      "RoomChannel/$id",
+      "RoomChannel",
       onSubscribed: () => print("Subscribed on channel Chat"),
       onMessage: (message) => print("Got some message!\n$message"),
     );
@@ -256,7 +256,7 @@ class Chat {
 
   superUserChat(String token, String msg, String uid) {
     var cable = ActionCable.Connect(
-      "WS?token=$token&role=superuser&chat_id=$uid",
+      "$WS?token=$token&role=superuser&chat_id=$uid",
       onConnected: () => print("Connected"),
       onConnectionLost: () => print("Connection lost"),
     );
