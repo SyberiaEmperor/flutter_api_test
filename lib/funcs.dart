@@ -4,7 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker_web/image_picker_web.dart';
-import 'package:action_cable/action_cable.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'dish.dart';
 
@@ -240,10 +241,23 @@ class Requests {
 class Chat {
   static const WS = 'ws://109.172.68.223:3000/cable';
 
+  defConnect(String token) {
+    final channel = IOWebSocketChannel.connect('$WS?token=$token');
+    channel.sink.add("hello!");
+    channel.stream.listen(
+      (event) {
+        channel.sink.add("recieved!");
+      },
+    );
+  }
+
+/*
+
   userChat(String token, String msg, String id) {
     var cable = ActionCable.Connect(
       "$WS?token=$token",
       onConnected: () => print("Connected"),
+      onCannotConnect: () => print("i can't"),
       onConnectionLost: () => print("Connection lost"),
     );
     cable.subscribe(
@@ -270,6 +284,8 @@ class Chat {
     );
     cable.performAction("Chat", action: "send", actionParams: {"message": msg});
   }
+}
+*/
 }
 
 class NetworkException implements Exception {}

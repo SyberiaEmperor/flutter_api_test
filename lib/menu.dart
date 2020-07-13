@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'chat_view.dart';
 import 'funcs.dart';
 
 class Menu extends StatefulWidget {
@@ -69,6 +70,20 @@ class _MenuState extends State<Menu> {
                 await reqs.getDish(token, 1.toString());
               },
               child: Text('get dish by id'),
+            ),
+            FlatButton(
+              onPressed: () async {
+                String id = "2";
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Chat_View(
+                            token: token,
+                            id: id,
+                          )),
+                );
+              },
+              child: Text('Chat'),
             ),
           ],
         ),
