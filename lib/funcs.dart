@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 import 'package:image_picker_web/image_picker_web.dart';
+import 'package:action_cable/action_cable.dart';
 
 import 'dish.dart';
 
@@ -235,6 +234,41 @@ class Requests {
     dishList.forEach((element) {
       updateDish(token, element);
     });
+  }
+}
+
+class Chat {
+  static const WS = 'ws://109.172.68.223:3000/cable';
+
+  userChat(String token, String msg, String id) {
+    var cable = ActionCable.Connect(
+      "WS?token=$token",
+      onConnected: () => print("Connected"),
+      onConnectionLost: () => print("Connection lost"),
+    );
+    cable.subscribe(
+      "RoomChannel/$id",
+      onSubscribed: () => print("Subscribed on channel Chat"),
+      onMessage: (message) => print("Got some message!\n$message"),
+    );
+    cable.performAction("Chat", action: "send", actionParams: {"message": msg});
+  }
+
+  superUserChat(String token, String msg, String uid) {
+    var cable = ActionCable.Connect(
+      "WS?token=$token&role=superuser&chat_id=$uid",
+      onConnected: () => print("Connected"),
+      onConnectionLost: () => print("Connection lost"),
+    );
+    cable.subscribe(
+      "RoomChannel",
+      channelParams: {
+        "chat_id": uid,
+      },
+      onSubscribed: () => print("Subscribed on channel Chat"),
+      onMessage: (message) => print("Got some message!\n$message"),
+    );
+    cable.performAction("Chat", action: "send", actionParams: {"message": msg});
   }
 }
 
