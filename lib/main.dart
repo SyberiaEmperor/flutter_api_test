@@ -102,11 +102,15 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('Enter'),
             ),
             FlatButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Reorder_Test()),
-                );
+              onPressed: () async {
+                token = await reqs.getTokenAdmin(
+                    login: name.text, password: password.text);
+                if (token != null)
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Reorder_Test(token: token)),
+                  );
               },
               child: Text('Test_1'),
             ),

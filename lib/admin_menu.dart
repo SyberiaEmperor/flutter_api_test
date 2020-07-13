@@ -18,7 +18,7 @@ class AdminMenu extends StatefulWidget {
 class _MenuState extends State<AdminMenu> {
   _MenuState({this.token});
   Requests reqs = Requests();
-
+  List<Dish> dishes = List<Dish>();
   Uint8List img = null;
 
   TextEditingController dishid = TextEditingController();
@@ -79,7 +79,7 @@ class _MenuState extends State<AdminMenu> {
                   id: dishid.text,
                   category: category.text,
                 );
-                await reqs.updateDish(token, dish, dish.id);
+                await reqs.updateDish(token, dish);
               },
               child: Text('update dish'),
             ),
@@ -122,6 +122,19 @@ class _MenuState extends State<AdminMenu> {
                 reqs.ffs(img, token, dishid.text);
               },
               child: Text('upload image to server'),
+            ),
+            FlatButton(
+              onPressed: () async {
+                testlist = await reqs.getDishes(token);
+              },
+              child: Text('get dishes'),
+            ),
+            FlatButton(
+              onPressed: () async {
+                for (var i = 0; i < testlist.length; i++)
+                  await reqs.addDish(token, testlist[i], img);
+              },
+              child: Text('get dishes'),
             ),
           ],
         ),

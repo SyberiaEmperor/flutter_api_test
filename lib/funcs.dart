@@ -115,15 +115,23 @@ class Requests {
   }
 
   ///Запрос на получение всех блюд
-  Future<void> getDishes(String token) async {
+  Future<List<Dish>> getDishes(String token) async {
     //TODO: Изменить возвращаемый тип данных
+    List<Dish> res = new List<Dish>();
     http.Response response = await http.get(
       URL + "/dishes",
       headers: {
         HttpHeaders.authorizationHeader: token,
       },
     );
+    print(response.body);
+    List<dynamic> temp = jsonDecode(response.body);
+    temp.forEach((elem) {
+      res.add(new Dish.fromData(elem));
+    });
     print(jsonDecode(response.body));
+
+    return res;
   }
 
   ///Запрос на добавление блюда
@@ -157,9 +165,10 @@ class Requests {
   }
 
   ///Запрос на получение блюда по его айди
-  Future<void> updateDish(String token, Dish dish, String id) async {
+  Future<void> updateDish(String token, Dish dish) async {
     //TODO: Переместить айдишник из параметров в тело функции
     //TODO: Изменить возвращаемый тип данных
+    var id = dish.id;
     http.Response response = await http.put(
       URL + "/dishes/$id",
       headers: {
@@ -220,6 +229,12 @@ class Requests {
           }
         }));
     print(response.body);
+  }
+
+  Future<void> updateDishList(String token, List<Dish> dishList) async {
+    dishList.forEach((element) {
+      updateDish(token, element);
+    });
   }
 }
 

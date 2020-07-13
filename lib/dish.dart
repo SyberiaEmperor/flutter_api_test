@@ -36,15 +36,17 @@ class Dish {
   }
 
   Dish.fromData(Map<String, dynamic> data)
-      : name = data['name'],
-        subName = data['subName'],
-        caption1 = data['caption1'],
-        caption2 = data['caption2'],
-        caption3 = data['caption3'],
-        price = data['price'],
-        category = data['category'],
-        position = data['zindex'],
-        picUrl = Requests.URL + data['picUrl'];
+      : id = (data['id']).toString(),
+        name = data['name'] ?? ' ',
+        subName = data['subname'] ?? ' ',
+        caption1 = data['caption1'] ?? ' ',
+        caption2 = data['caption2'] ?? ' ',
+        caption3 = data['caption3'] ?? ' ',
+        price = data['price'] ?? ' ',
+        category = data['category'] ?? ' ',
+        position = data['zindex'];
+  //picUrl = data['picUrl']['url'] ??
+  //  ' '; // TODO: НЕ ПОТЕРЯТЬ Request.URL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   Map<String, dynamic> toJson() {
     return {
@@ -55,19 +57,19 @@ class Dish {
       'caption3': caption3,
       'price': price,
       'category': category,
-      'picurl': picUrl,
+      'picurl': {'url': picUrl},
       'zindex': position,
     };
   }
 }
 
 List<Dish> testlist = [
-  new Dish(id: "001", name: "Пельмени", position: 0),
-  new Dish(id: "002", name: "Борщ", position: 1),
-  new Dish(id: "003", name: "Луперкаль", position: 2),
-  new Dish(id: "004", name: "ТГК", position: 3),
-  new Dish(id: "005", name: "Киста", position: 4),
-  new Dish(id: "006", name: "Кистаочка", position: 5),
-  new Dish(id: "007", name: "Царь-тряпка", position: 6),
-  new Dish(id: "008", name: "Кирилл", position: 7),
+  new Dish(name: "Пельмени", price: "150"),
+  new Dish(name: "Борщ", price: "150"),
+  new Dish(name: "Луперкаль", price: "150"),
+  new Dish(name: "ТГК", price: "150"),
+  new Dish(name: "Киста", price: "150"),
+  new Dish(name: "Кистаочка", price: "150"),
+  new Dish(name: "Царь-тряпка", price: "150"),
+  new Dish(name: "Кирилл", price: "150"),
 ];
