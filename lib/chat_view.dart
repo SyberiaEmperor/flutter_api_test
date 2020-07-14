@@ -20,7 +20,7 @@ class _Chat_ViewState extends State<Chat_View> {
   _Chat_ViewState(this.token, this.id);
 
   Requests reqs = Requests();
-  Chat chat = Chat();
+  Chatfuncs chat = Chatfuncs();
   int idx;
   List<Widget> messages = List<Widget>();
 

@@ -70,7 +70,10 @@ class _MenuState extends State<AdminMenu> {
                 controller: subname,
               ),
               FlatButton(
-                onPressed: () async {},
+                onPressed: () async {
+                  reqs.getHistory(
+                      token: token, id: '3'); //TODO: Сделать айди переменной
+                },
                 child: Text('get history'),
               ),
               FlatButton(
