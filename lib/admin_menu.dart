@@ -70,6 +70,10 @@ class _MenuState extends State<AdminMenu> {
                 controller: subname,
               ),
               FlatButton(
+                onPressed: () async {},
+                child: Text('get history'),
+              ),
+              FlatButton(
                 onPressed: () async {
                   Dish dish = Dish(
                     name: name.text,
