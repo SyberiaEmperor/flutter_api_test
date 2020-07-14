@@ -71,6 +71,12 @@ class _MenuState extends State<AdminMenu> {
               ),
               FlatButton(
                 onPressed: () async {
+                  reqs.getChats(token: token);
+                },
+                child: Text('get Chats'),
+              ),
+              FlatButton(
+                onPressed: () async {
                   reqs.getHistory(
                       token: token, id: '3'); //TODO: Сделать айди переменной
                 },

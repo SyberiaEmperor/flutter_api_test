@@ -7,6 +7,7 @@ import 'package:flutter_api_test/message.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_socket_channel/io.dart';
 
+import 'chat.dart';
 import 'dish.dart';
 
 class Requests {
@@ -228,8 +229,27 @@ class Requests {
     });
   }
 
+  Future<List<Chat>> getChats({@required String token}) async {
+    List<Chat> result = new List<Chat>();
+    http.Response response = await http.get(
+      URL + "/chats",
+      headers: {
+        HttpHeaders.authorizationHeader: token,
+      },
+    );
+    List<dynamic> messageHistory = jsonDecode(response.body);
+    messageHistory.forEach((chat) {
+      result.add(new Chat.fromJson(chat));
+    });
+    result.forEach((element) {
+      element.printChat();
+    });
+    return result;
+  }
+
   ///Загружает историю сообщений данного чатика
-  Future<List<Message>> getHistory({@required String token, @required String id}) async {
+  Future<List<Message>> getHistory(
+      {@required String token, @required String id}) async {
     List<Message> result = new List<Message>();
     http.Response response = await http.get(
       URL + "/messages/$id",
