@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'message.dart';
 
 class Chat {
@@ -6,12 +8,19 @@ class Chat {
   final String phoneNumber;
   final Message lastMsg;
 
-  Chat({this.id, this.name, this.phoneNumber, this.lastMsg});
+  Chat(
+      {@required this.id,
+      @required this.name,
+      @required this.phoneNumber,
+      @required this.lastMsg});
   Chat.fromJson(data)
       : id = data['id'].toString(),
         name = data['user']['name'] ?? "user#${data['id']}",
         phoneNumber = data['user']['phone_number'],
-        lastMsg = data['last_message'] ?? new Message();
+        lastMsg = data['last_message'] == null
+            ? defaultMessage
+            : new Message.fromJson(
+                data['last_message']); //TODO: Мб сообщение-заглушку?
 
   void printChat() {
     print("chat_id is $id");
@@ -19,3 +28,6 @@ class Chat {
     print("phoneNumber is $phoneNumber");
   }
 }
+
+Message defaultMessage = new Message(
+    content: "No content", sender: "User", time: new DateTime(2020), type: 1);

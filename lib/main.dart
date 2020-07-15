@@ -65,8 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             FlatButton(
               onPressed: () async {
-                token = await reqs.getTokenAdmin(
-                    login: name.text, password: password.text);
+                token =
+                    await reqs.getTokenAdmin(login: 'admin', password: 'admin');
                 print(token +
                     "////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
                 if (token != null) {
@@ -74,9 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AdminMenu(
-                              token: token,
-                            )),
+                      builder: (context) => AdminMenu(
+                        token: token,
+                      ),
+                    ),
                   );
                 }
               },
@@ -93,9 +94,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Menu(
-                              token: token,
-                            )),
+                      builder: (context) => Menu(
+                        token: token,
+                      ),
+                    ),
                   );
                 }
               },
